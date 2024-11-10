@@ -3,30 +3,36 @@
 #include <stdlib.h>
 #include <float.h>
 
-typedef struct {
+typedef struct
+{
     double x;
     double y;
 } Point;
 
-double model(double x, double a, double b, double c) {
+double model(double x, double a, double b, double c)
+{
     return a * sin(b * x + c);
 }
 
-double mean_squared_error(Point points[], int n, double a, double b, double c) {
+double mean_squared_error(Point points[], int n, double a, double b, double c)
+{
     double error = 0.0;
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         double diff = model(points[i].x, a, b, c) - points[i].y;
         error += diff * diff;
     }
     return error / n;
 }
 
-void compute_gradients(Point points[], int n, double a, double b, double c, double *grad_a, double *grad_b, double *grad_c) {
+void compute_gradients(Point points[], int n, double a, double b, double c, double *grad_a, double *grad_b, double *grad_c)
+{
     *grad_a = 0.0;
     *grad_b = 0.0;
     *grad_c = 0.0;
-    
-    for (int i = 0; i < n; i++) {
+
+    for (int i = 0; i < n; i++)
+    {
         double x = points[i].x;
         double error = model(x, a, b, c) - points[i].y;
 
@@ -36,9 +42,11 @@ void compute_gradients(Point points[], int n, double a, double b, double c, doub
     }
 }
 
-void gradient_descent_sine_wave(Point points[], int n, double *a, double *b, double *c, double rate, int iterations) {
+void gradient_descent_sine_wave(Point points[], int n, double *a, double *b, double *c, double rate, int iterations)
+{
 
-    for (int i = 0; i < iterations; i++) {
+    for (int i = 0; i < iterations; i++)
+    {
         double grad_a, grad_b, grad_c;
         compute_gradients(points, n, *a, *b, *c, &grad_a, &grad_b, &grad_c);
 
@@ -46,7 +54,8 @@ void gradient_descent_sine_wave(Point points[], int n, double *a, double *b, dou
         *b -= rate * grad_b;
         *c -= rate * grad_c;
 
-        if (i % 100 == 0) {
+        if (i % 100 == 0)
+        {
             double error = mean_squared_error(points, n, *a, *b, *c);
             printf("Iterace %d: a = %f, b = %f, c = %f, Chyba: %f\n", i, *a, *b, *c, error);
         }
@@ -54,17 +63,22 @@ void gradient_descent_sine_wave(Point points[], int n, double *a, double *b, dou
 }
 
 void iterate_sine_wave(Point points[], int n, double *best_a, double *best_b, double *best_c,
-                   double a_min, double a_max, double a_step,
-                   double b_min, double b_max, double b_step,
-                   double c_min, double c_max, double c_step) {
+                       double a_min, double a_max, double a_step,
+                       double b_min, double b_max, double b_step,
+                       double c_min, double c_max, double c_step)
+{
     double min_error = DBL_MAX;
 
-    for (double a = a_min; a <= a_max; a += a_step) {
-        for (double b = b_min; b <= b_max; b += b_step) {
-            for (double c = c_min; c <= c_max; c += c_step) {
+    for (double a = a_min; a <= a_max; a += a_step)
+    {
+        for (double b = b_min; b <= b_max; b += b_step)
+        {
+            for (double c = c_min; c <= c_max; c += c_step)
+            {
                 double error = mean_squared_error(points, n, a, b, c);
 
-                if (error < min_error) {
+                if (error < min_error)
+                {
                     min_error = error;
                     *best_a = a;
                     *best_b = b;
@@ -77,35 +91,32 @@ void iterate_sine_wave(Point points[], int n, double *best_a, double *best_b, do
     printf("Chyba: %f\n", min_error);
 }
 
-int main() {
-  // To use, rename the list to points
+int main()
+{
+    // To use, rename the list to points
     Point Io[] = {
         {0, 1.88},
         {0.1944, 0.00},
         {0.9549, -1.30},
         {1.9514, 0.15},
-        {2.9410, 0.99}
-    };
+        {2.9410, 0.99}};
     Point Europa[] = {
         {0, -3.41},
         {0.9549, 3.79},
         {1.9514, 2.33},
-        {2.9410, -4.51}
-    };
+        {2.9410, -4.51}};
     Point Ganymedes[] = {
         {0, -5.8},
         {0.9549, -0.43},
         {1.9514, 5.77},
-        {2.9410, 7.54}
-    };
+        {2.9410, 7.54}};
     Point Callisto[] = {
         {0, 13.30},
         {0.9549, 13.50},
         {1.9514, 11.80},
         {2.9410, 8.49},
         {4.7535, 0.00},
-        {8.9827, -13.40}
-    };
+        {8.9827, -13.40}};
 
     int n = sizeof(points) / sizeof(points[0]);
 
@@ -120,11 +131,10 @@ int main() {
 
     iterate_sine_wave(points, n, &best_a, &best_b, &best_c, a_min, a_max, a_step, b_min, b_max, b_step, c_min, c_max, c_step);
 
-    //gradient_descent_sine_wave(Io, n, &best_a, &best_b, &best_c, rate, iterations);
+    // gradient_descent_sine_wave(Io, n, &best_a, &best_b, &best_c, rate, iterations);
 
     double T = 2 * M_PI / best_b;
 
     printf("Hlavni poloosa: %f, Perioda: %f, Fazovy posun: %f\n", best_a, T, best_c);
     return 0;
 }
-
