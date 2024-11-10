@@ -1,0 +1,4 @@
+Io: Hlavni poloosa: 3.000000, Perioda: 1.769911, Fazovy posun: 2.450442
+Callisto: Hlavni poloosa: 13.540000, Perioda: 16.755161, Fazovy posun: 1.357168
+Europa: Hlavni poloosa: 4.820000, Perioda: 3.590392, Fazovy posun: 5.504070
+Ganymedes: Hlavni poloosa: 7.620000, Perioda: 7.099644, Fazovy posun: 5.397256
