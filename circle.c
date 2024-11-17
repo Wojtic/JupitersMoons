@@ -36,9 +36,9 @@ void compute_gradients(Point points[], int n, double a, double b, double c, doub
         double x = points[i].x;
         double error = model(x, a, b, c) - points[i].y;
 
-        *grad_a += 2 * error * sin(b * x + c) / n;
-        *grad_b += 2 * error * a * x * cos(b * x + c) / n;
-        *grad_c += 2 * error * a * cos(b * x + c) / n;
+        *grad_a += 2 * error * sin(b * x + c) / n;         // Parcialni derivace vzhledem k a
+        *grad_b += 2 * error * a * x * cos(b * x + c) / n; // Parcialni derivace vzhledem k b
+        *grad_c += 2 * error * a * cos(b * x + c) / n;     // Parcialni derivace vzhledem k c
     }
 }
 
@@ -94,23 +94,27 @@ void iterate_sine_wave(Point points[], int n, double *best_a, double *best_b, do
 int main()
 {
     // To use, rename the list to points
+    // Io
     Point Io[] = {
         {0, 1.88},
         {0.1944, 0.00},
         {0.9549, -1.30},
         {1.9514, 0.15},
         {2.9410, 0.99}};
+    // Europa
     Point Europa[] = {
         {0, -3.41},
         {0.9549, 3.79},
         {1.9514, 2.33},
         {2.9410, -4.51}};
+    // Ganymedes
     Point Ganymedes[] = {
         {0, -5.8},
         {0.9549, -0.43},
         {1.9514, 5.77},
         {2.9410, 7.54}};
-    Point Callisto[] = {
+    // Callisto
+    Point points[] = {
         {0, 13.30},
         {0.9549, 13.50},
         {1.9514, 11.80},
